@@ -1,19 +1,19 @@
 package lab1;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Window extends JFrame {
-    private ArrayList<String> comboBoxItems = new ArrayList();
+public class Window {
 
-    Window(String name) {
-        super(name);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public JFrame createFrame(String name) {
+        JFrame frame = new JFrame();
+        frame.setName(name);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(2, 3, 12, 12));
@@ -24,19 +24,19 @@ public class Window extends JFrame {
         mainPanel.add(getPanel4());
         mainPanel.add(getPanel5());
 
-        setContentPane(mainPanel);
-        setSize(850, 500);
+        frame.setContentPane(mainPanel);
+        frame.setSize(850, 500);
+        return frame;
     }
 
     private Box getPanel1() {
+        ArrayList<String> comboBoxItems = new ArrayList();
         JComboBox<String> menu = new JComboBox();
         JTextField textField = new JTextField("Enter the text");
-        JButton addButton = new JButton("Add");
+        JLabel addButton = new StarLabel().createStarLabel("Add");
         addButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
                 for (String item : comboBoxItems) {
                     if (item.equals(textField.getText())) {
                         JOptionPane.showMessageDialog(null, "The element already exists", "Information",
@@ -50,7 +50,6 @@ public class Window extends JFrame {
         });
 
         Box horizontalBox = Box.createHorizontalBox();
-        horizontalBox.add(Box.createHorizontalGlue());
         horizontalBox.add(textField);
         horizontalBox.add(Box.createHorizontalStrut(6));
         horizontalBox.add(addButton);
@@ -66,24 +65,20 @@ public class Window extends JFrame {
 
     private Box getPanel2() {
         JTextField textField = new JTextField("Enter the text");
-        JButton renameButton = new JButton("Rename button");
-        JButton exchangeButton = new JButton("Exchange");
-        renameButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-                exchangeButton.setText(textField.getText());
-            }
-        });
+        JLabel renameButton = new StarLabel().createStarLabel("Rename button");
+        JLabel exchangeButton = new StarLabel().createStarLabel("Exchange");
         exchangeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
                 String tempButton = exchangeButton.getText();
                 exchangeButton.setText(renameButton.getText());
                 renameButton.setText(tempButton);
+            }
+        });
+        renameButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                exchangeButton.setText(textField.getText());
             }
         });
 
@@ -95,17 +90,19 @@ public class Window extends JFrame {
         Box box = Box.createVerticalBox();
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(12, 12, 12, 12)));
         box.add(textField);
+        box.add(Box.createHorizontalStrut(6));
         box.add(horizontalBox);
+        box.add(Box.createHorizontalStrut(6));
 
         return box;
     }
 
     private Box getPanel3() {
         JTextField textField = new JTextField("Enter the text");
-        JButton choiceButton = new JButton("Choice button");
-        JRadioButton radioButton1 = new JRadioButton("Flag 1");
-        JRadioButton radioButton2 = new JRadioButton("Flag 2");
-        JRadioButton radioButton3 = new JRadioButton("Flag 3");
+        JLabel choiceButton = new StarLabel().createStarLabel("Choice button");
+        JRadioButton radioButton1 = new JRadioButton("1");
+        JRadioButton radioButton2 = new JRadioButton("2");
+        JRadioButton radioButton3 = new JRadioButton("3");
 
         ButtonGroup group = new ButtonGroup();
         group.add(radioButton1);
@@ -115,21 +112,20 @@ public class Window extends JFrame {
         choiceButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (textField.getText().equals(radioButton1.getText())) {
+                if (radioButton1.getText().equals(textField.getText())) {
                     radioButton1.setSelected(true);
                     return;
                 }
-                if (textField.getText().equals(radioButton2.getText())) {
+                if (radioButton2.getText().equals(textField.getText())) {
                     radioButton2.setSelected(true);
                     return;
                 }
-                if (textField.getText().equals(radioButton3.getText())) {
+                if (radioButton3.getText().equals(textField.getText())) {
                     radioButton3.setSelected(true);
                     return;
                 }
-                 JOptionPane.showMessageDialog(null,"This name does not exist", "Information",
-                         JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "This name does not exist", "Information",
+                        JOptionPane.WARNING_MESSAGE);
             }
         });
 
@@ -143,29 +139,29 @@ public class Window extends JFrame {
 
         return box;
     }
+
     private Box getPanel4() {
         JTextField textField = new JTextField("Enter the text");
-        JCheckBox checkBox1 = new JCheckBox("Flag 1");
-        JCheckBox checkBox2 = new JCheckBox("Flag 2");
-        JCheckBox checkBox3 = new JCheckBox("Flag 3");
-        JButton choiceButton = new JButton("Choice Button");
+        JCheckBox checkBox1 = new JCheckBox("1");
+        JCheckBox checkBox2 = new JCheckBox("2");
+        JCheckBox checkBox3 = new JCheckBox("3");
+        JLabel choiceButton = new StarLabel().createStarLabel("Choice Button");
         choiceButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (textField.getText().equals(checkBox1.getText())) {
-                    checkBox1.setSelected(true);
+                if (checkBox1.getText().equals(textField.getText())) {
+                    checkBox1.setSelected(!checkBox1.isSelected());
                     return;
                 }
-                if (textField.getText().equals(checkBox2.getText())) {
-                    checkBox2.setSelected(true);
+                if (checkBox2.getText().equals(textField.getText())) {
+                    checkBox2.setSelected(!checkBox2.isSelected());
                     return;
                 }
-                if (textField.getText().equals(checkBox3.getText())) {
-                    checkBox3.setSelected(true);
+                if (checkBox3.getText().equals(textField.getText())) {
+                    checkBox3.setSelected(checkBox3.isSelected());
                     return;
                 }
-                JOptionPane.showMessageDialog(null,"This name does not exist", "Information",
+                JOptionPane.showMessageDialog(null, "This name does not exist", "Information",
                         JOptionPane.WARNING_MESSAGE);
             }
         });
@@ -187,62 +183,26 @@ public class Window extends JFrame {
         JScrollPane tableScrollPane = new JScrollPane(table);
         JTextField textField = new JTextField("Enter the text");
 
-        JButton addTextButton = new JButton("Button 1");
+        JLabel addTextButton = new StarLabel().createStarLabel("Button 1");
         addTextButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
                 for (int i = 0; i < table.getRowCount(); i++) {
                     table.setValueAt(textField.getText(), i, 0);
                 }
             }
         });
+        JLabel textMoveButton1 = new StarLabel().createStarLabel("Button 2");
+        textMoveButton1.addMouseListener(new TableAdapter(table, 1, 0));
 
-        JButton textMoveButton1 = new JButton("Button 2");
-        textMoveButton1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (table.getSelectedRow() == -1) {
-                    JOptionPane.showMessageDialog(null, "You haven't selected a line",
-                            "Information", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                if (table.getSelectedColumn() == 1) {
-                    JOptionPane.showMessageDialog(null, "You must select the first column",
-                            "Information", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                table.setValueAt(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()),
-                        table.getSelectedRow(), 1);
-                table.setValueAt(null, table.getSelectedRow(), 0);
-            }
-        });
-
-        JButton textMoveButton2 = new JButton("Button 3");
-        textMoveButton2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (table.getSelectedRow() == -1) {
-                    JOptionPane.showMessageDialog(null, "You haven't selected a line", "Information",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                if (table.getSelectedColumn() == 0) {
-                    JOptionPane.showMessageDialog(null, "You must select the second column", "Information",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                table.setValueAt(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()),
-                        table.getSelectedRow(), 0);
-                table.setValueAt(null, table.getSelectedRow(), 1);
-            }
-        });
+        JLabel textMoveButton2 = new StarLabel().createStarLabel("Button 3");
+        textMoveButton2.addMouseListener(new TableAdapter(table, 0, 1));
 
         Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.add(addTextButton);
+        horizontalBox.add(Box.createHorizontalStrut(6));
         horizontalBox.add(textMoveButton1);
+        horizontalBox.add(Box.createHorizontalStrut(6));
         horizontalBox.add(textMoveButton2);
 
         Box box = Box.createVerticalBox();
@@ -252,5 +212,50 @@ public class Window extends JFrame {
         box.add(tableScrollPane);
 
         return box;
+    }
+
+    class TableAdapter extends MouseAdapter {
+        JTable table;
+        int col1;
+        int col2;
+
+        TableAdapter(JTable table, int col1, int col2) {
+            this.table = table;
+            this.col1 = col1;
+            this.col2 = col2;
+        }
+
+        public void mouseClicked(MouseEvent e) {
+            if (table.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null, "You haven't selected a line",
+                        "Information", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if ((col1 == 0) && (table.getSelectedColumn() == 0)) {
+                JOptionPane.showMessageDialog(null, "You must select the first column",
+                        "Information", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if ((col1 == 1) && (table.getSelectedColumn() == 1)) {
+                JOptionPane.showMessageDialog(null, "You must select the first column",
+                        "Information", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()) != null) {
+                table.setValueAt(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()),
+                        table.getSelectedRow(), col1);
+                table.setValueAt(null, table.getSelectedRow(), col2);
+            }
+        }
+    }
+
+    class StarLabel {
+       public JLabel createStarLabel(String text) {
+           JLabel label = new JLabel(text, new ImageIcon("favorite.png"), SwingConstants.CENTER);
+           label.setHorizontalTextPosition(JLabel.CENTER);
+           label.setVerticalTextPosition(JLabel.BOTTOM);
+           label.setPreferredSize(new Dimension(100, 80));
+           return label;
+        }
     }
 }
