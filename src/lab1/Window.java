@@ -48,7 +48,6 @@ public class Window {
                 menu.addItem(textField.getText());
             }
         });
-
         Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.add(textField);
         horizontalBox.add(Box.createHorizontalStrut(6));
@@ -81,7 +80,6 @@ public class Window {
                 exchangeButton.setText(textField.getText());
             }
         });
-
         Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.add(renameButton);
         horizontalBox.add(Box.createHorizontalGlue());
@@ -128,7 +126,6 @@ public class Window {
                         JOptionPane.WARNING_MESSAGE);
             }
         });
-
         Box box = Box.createVerticalBox();
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(12, 12, 12, 12)));
         box.add(textField);
@@ -165,7 +162,6 @@ public class Window {
                         JOptionPane.WARNING_MESSAGE);
             }
         });
-
         Box box = Box.createVerticalBox();
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(12, 12, 12, 12)));
         box.add(textField);
