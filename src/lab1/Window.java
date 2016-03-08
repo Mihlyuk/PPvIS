@@ -1,12 +1,17 @@
 package lab1;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 public class Window {
 
@@ -31,12 +36,13 @@ public class Window {
 
     private Box getPanel1() {
         ArrayList<String> comboBoxItems = new ArrayList();
-        JComboBox<String> menu = new JComboBox();
+        JComboBox menu = new JComboBox();
         JTextField textField = new JTextField("Enter the text");
-        JLabel addButton = new StarLabel().createStarLabel("Add");
-        addButton.addMouseListener(new MouseAdapter() {
+        StarButton addButton = new StarButton("Add");
+        textField.setPreferredSize(addButton.getMaximumSize());
+        addButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 for (String item : comboBoxItems) {
                     if (item.equals(textField.getText())) {
                         JOptionPane.showMessageDialog(null, "The element already exists", "Information",
@@ -48,56 +54,54 @@ public class Window {
                 menu.addItem(textField.getText());
             }
         });
-        Box horizontalBox = Box.createHorizontalBox();
-        horizontalBox.add(textField);
-        horizontalBox.add(Box.createHorizontalStrut(6));
-        horizontalBox.add(addButton);
 
         Box box = Box.createVerticalBox();
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(6, 6, 6, 6)));
         box.add(menu);
-        box.add(Box.createVerticalGlue());
-        box.add(horizontalBox);
+        box.add(Box.createRigidArea(new Dimension(0, 5)));
+        box.add(textField);
+        box.add(Box.createRigidArea(new Dimension(0, 5)));
+        box.add(addButton);
+
 
         return box;
     }
 
     private Box getPanel2() {
         JTextField textField = new JTextField("Enter the text");
-        JLabel renameButton = new StarLabel().createStarLabel("Rename button");
-        JLabel exchangeButton = new StarLabel().createStarLabel("Exchange");
-        exchangeButton.addMouseListener(new MouseAdapter() {
+        StarButton renameButton = new StarButton("Rename");
+        StarButton exchangeButton = new StarButton("Exchange");
+
+        exchangeButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 String tempButton = exchangeButton.getText();
                 exchangeButton.setText(renameButton.getText());
                 renameButton.setText(tempButton);
             }
         });
-        renameButton.addMouseListener(new MouseAdapter() {
+        renameButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
+
                 exchangeButton.setText(textField.getText());
             }
         });
-        Box horizontalBox = Box.createHorizontalBox();
-        horizontalBox.add(renameButton);
-        horizontalBox.add(Box.createHorizontalGlue());
-        horizontalBox.add(exchangeButton);
 
+        Box horizontalBox = Box.createHorizontalBox();
+        horizontalBox.add(exchangeButton);
+        horizontalBox.add(renameButton);
         Box box = Box.createVerticalBox();
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(12, 12, 12, 12)));
         box.add(textField);
-        box.add(Box.createHorizontalStrut(6));
         box.add(horizontalBox);
-        box.add(Box.createHorizontalStrut(6));
 
         return box;
     }
 
     private Box getPanel3() {
         JTextField textField = new JTextField("Enter the text");
-        JLabel choiceButton = new StarLabel().createStarLabel("Choice button");
+        StarButton choiceButton = new StarButton("Choice");
         JRadioButton radioButton1 = new JRadioButton("1");
         JRadioButton radioButton2 = new JRadioButton("2");
         JRadioButton radioButton3 = new JRadioButton("3");
@@ -107,9 +111,9 @@ public class Window {
         group.add(radioButton2);
         group.add(radioButton3);
 
-        choiceButton.addMouseListener(new MouseAdapter() {
+        choiceButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (radioButton1.getText().equals(textField.getText())) {
                     radioButton1.setSelected(true);
                     return;
@@ -129,10 +133,11 @@ public class Window {
         Box box = Box.createVerticalBox();
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(12, 12, 12, 12)));
         box.add(textField);
-        box.add(choiceButton);
+
         box.add(radioButton1);
         box.add(radioButton2);
         box.add(radioButton3);
+        box.add(choiceButton);
 
         return box;
     }
@@ -142,10 +147,10 @@ public class Window {
         JCheckBox checkBox1 = new JCheckBox("1");
         JCheckBox checkBox2 = new JCheckBox("2");
         JCheckBox checkBox3 = new JCheckBox("3");
-        JLabel choiceButton = new StarLabel().createStarLabel("Choice Button");
-        choiceButton.addMouseListener(new MouseAdapter() {
+        StarButton choiceButton = new StarButton("Choice");
+        choiceButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (checkBox1.getText().equals(textField.getText())) {
                     checkBox1.setSelected(!checkBox1.isSelected());
                     return;
@@ -179,20 +184,20 @@ public class Window {
         JScrollPane tableScrollPane = new JScrollPane(table);
         JTextField textField = new JTextField("Enter the text");
 
-        JLabel addTextButton = new StarLabel().createStarLabel("Button 1");
-        addTextButton.addMouseListener(new MouseAdapter() {
+        StarButton addTextButton = new StarButton("Button 1");
+        addTextButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 for (int i = 0; i < table.getRowCount(); i++) {
                     table.setValueAt(textField.getText(), i, 0);
                 }
             }
         });
-        JLabel textMoveButton1 = new StarLabel().createStarLabel("Button 2");
-        textMoveButton1.addMouseListener(new TableAdapter(table, 1, 0));
+        StarButton textMoveButton1 = new StarButton("Button 2");
+        textMoveButton1.addActionListener(new TableAdapter(table, 1, 0));
 
-        JLabel textMoveButton2 = new StarLabel().createStarLabel("Button 3");
-        textMoveButton2.addMouseListener(new TableAdapter(table, 0, 1));
+        StarButton textMoveButton2 = new StarButton("Button 3");
+        textMoveButton2.addActionListener(new TableAdapter(table, 0, 1));
 
         Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.add(addTextButton);
@@ -205,12 +210,13 @@ public class Window {
         box.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(12, 12, 12, 12)));
         box.add(textField);
         box.add(horizontalBox);
+
         box.add(tableScrollPane);
 
         return box;
     }
 
-    class TableAdapter extends MouseAdapter {
+    class TableAdapter implements ActionListener {
         JTable table;
         int col1;
         int col2;
@@ -221,7 +227,7 @@ public class Window {
             this.col2 = col2;
         }
 
-        public void mouseClicked(MouseEvent e) {
+        public void actionPerformed(ActionEvent e) {
             if (table.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "You haven't selected a line",
                         "Information", JOptionPane.WARNING_MESSAGE);
@@ -245,13 +251,32 @@ public class Window {
         }
     }
 
-    class StarLabel {
-       public JLabel createStarLabel(String text) {
-           JLabel label = new JLabel(text, new ImageIcon("favorite.png"), SwingConstants.CENTER);
-           label.setHorizontalTextPosition(JLabel.CENTER);
-           label.setVerticalTextPosition(JLabel.BOTTOM);
-           label.setPreferredSize(new Dimension(100, 80));
-           return label;
+    public class StarButton extends JButton {
+
+        private BufferedImage image;
+
+        StarButton(String name) {
+            super(name);
+            setContentAreaFilled(false);//заполнение background
+            setBorderPainted(false);
+            setMargin(new Insets(5, 5, 5, 5));
+            setPreferredSize(new Dimension(40, 40));
+            try {
+                image = ImageIO.read(new File("favorite.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            g.drawImage(image, 0, 0, null);
+            if (getModel().isPressed()) {
+                g.drawImage(image, 0, 1, null);
+            } else if (getModel().isRollover()) {
+                g.drawImage(image, 0, 0, null);
+            }
+            super.paintComponent(g);
         }
     }
 }
