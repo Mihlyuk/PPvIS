@@ -5,7 +5,7 @@ import javax.swing.*;
 public class MainView extends JFrame {
     public AddDialog addDialog = new AddDialog(this);
     public SearchDialog searchDialog = new SearchDialog(this);
-    public JScrollPane table = new TablePanel().create();
+    public TablePanel tablePanel = new TablePanel();
     public MenuBar menuBar = new MenuBar();
 
     public MainView(String name) {
@@ -17,7 +17,7 @@ public class MainView extends JFrame {
         searchDialog.setVisible(false);
         addDialog.setVisible(false);
 
-        getContentPane().add(table);
+        getContentPane().add(new JScrollPane(tablePanel));
 
         setSize(1000, 500);
     }

@@ -4,17 +4,24 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class SearchDialog extends JDialog {
     public JTextField trainNumber = new JTextField(20);
-    public JSpinner dateArriving = new JSpinner();
+    public JSpinner dateArriving = new JSpinner(new SpinnerDateModel());
+
     public JSpinner timeArriving = new JSpinner();
     public JSpinner timeDeparture = new JSpinner();
 
-    public JButton closeButton = new JButton("Close");
-    public JButton nextButton = new JButton("Next");
-    public JButton prevButton = new JButton("Prev");
+    public JTextField stationArriving = new JTextField(20);
+    public JTextField stationDeparting = new JTextField(20);
 
+    public JSpinner travelTime = new JSpinner(new SpinnerDateModel());
+
+    public JButton closeButton = new JButton("Close");
+    public JButton findButton = new JButton("Find");
+
+    public JTable table;
     SearchDialog(JFrame frame) {
         super(frame, false);
 
@@ -31,11 +38,12 @@ public class SearchDialog extends JDialog {
         box2.add(Box.createHorizontalStrut(6));
         box2.add(createTimeDeparture());
 
+        table = new JTable(new Object[30][6], new Object[]{"Номер поезда", "Станция отправления",
+                "Станция прибытия", "Дата и время отправления", "Дата и время прибытия", "Время в пути"});
+
         Box buttons = Box.createHorizontalBox();
         buttons.add(Box.createHorizontalGlue());
-        buttons.add(prevButton);
-        buttons.add(Box.createHorizontalStrut(6));
-        buttons.add(nextButton);
+        buttons.add(findButton);
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(closeButton);
 
@@ -43,11 +51,17 @@ public class SearchDialog extends JDialog {
         mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
         mainBox.add(box2);
         mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
+        mainBox.add(createStationArrivingDeparting());
+        mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
+        mainBox.add(createTravelTime());
+        mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
+        mainBox.add(new JScrollPane(table));
+        mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
         mainBox.add(buttons);
 
         add(mainBox);
 
-        pack();
+        setSize(400,500);
     }
 
     private Box createTrainNumber() {
@@ -91,5 +105,38 @@ public class SearchDialog extends JDialog {
 
         box.add(timeDeparture);
         return box;
+    }
+
+    private Box createStationArrivingDeparting() {
+        Box box = Box.createHorizontalBox();
+        box.setBorder(new TitledBorder("Станция"));
+
+        box.add(new JLabel("Отправления"));
+        box.add(Box.createHorizontalStrut(3));
+        box.add(stationArriving);
+        box.add(Box.createHorizontalStrut(6));
+        box.add(new JLabel("Прибытия"));
+        box.add(Box.createHorizontalStrut(3));
+        box.add(stationDeparting);
+        return box;
+    }
+
+    private Box createTravelTime() {
+        Box box = Box.createHorizontalBox();
+        box.setBorder(new TitledBorder("Время в пути"));
+
+        travelTime.setEditor(new JSpinner.DateEditor(travelTime, "HH:mm"));
+
+        box.add(travelTime);
+
+        return box;
+    }
+
+    public void addCloseButtonListener(ActionListener listener) {
+        closeButton.addActionListener(listener);
+    }
+
+    public void addFindButtonListener(ActionListener listener) {
+       findButton.addActionListener(listener);
     }
 }

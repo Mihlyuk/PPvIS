@@ -8,14 +8,16 @@ import java.awt.event.ActionListener;
 
 public class AddDialog extends JDialog {
     public JTextField trainNumber = new JTextField(20);
+
     public JSpinner dateArriving = new JSpinner(new SpinnerDateModel());
-    public JSpinner timeArriving = new JSpinner(new SpinnerNumberModel(0,0,24,1));
-    public JSpinner timeDeparting = new JSpinner(new SpinnerNumberModel(24,0,24,1));
+    public JSpinner dateDeparting = new JSpinner(new SpinnerDateModel());
+
     public JTextField stationArriving = new JTextField(20);
     public JTextField stationDeparting = new JTextField(20);
 
-    public JButton addButton = new JButton("Add");
+    public JSpinner travelTime = new JSpinner(new SpinnerDateModel());
 
+    public JButton addButton = new JButton("Add");
 
     AddDialog(JFrame frame) {
         super(frame,false);
@@ -25,18 +27,23 @@ public class AddDialog extends JDialog {
 
         Box box1 = Box.createHorizontalBox();
         box1.add(createTrainNumber());
-        box1.add(Box.createHorizontalStrut(6));
-        box1.add(createDateArriving());
+
+        Box box2 = Box.createHorizontalBox();
+        box2.add(createDateArriving());
+        box2.add(Box.createHorizontalStrut(6));
+        box2.add(createDateDeparting());
 
         Box buttons = Box.createHorizontalBox();
         buttons.add(Box.createHorizontalGlue());
         buttons.add(addButton);
 
-        mainBox.add(box1);
+        mainBox.add(createTrainNumber());
         mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
-        mainBox.add(createTimeArrivingDeparting());
+        mainBox.add(box2);
         mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
         mainBox.add(createStationArrivingDeparting());
+        mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
+        mainBox.add(createTravelTime());
         mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
         mainBox.add(buttons);
 
@@ -55,28 +62,21 @@ public class AddDialog extends JDialog {
 
     private Box createDateArriving() {
         Box box = Box.createHorizontalBox();
-        box.setBorder(new TitledBorder("Дата отправления"));
+        box.setBorder(new TitledBorder("Дата и время отправления"));
 
-        dateArriving.setEditor(new JSpinner.DateEditor(dateArriving, "dd MMMM"));
+        dateArriving.setEditor(new JSpinner.DateEditor(dateArriving, "dd MMMM HH:mm"));
 
         box.add(dateArriving);
         return box;
     }
 
-    private Box createTimeArrivingDeparting() {
+    private Box createDateDeparting() {
         Box box = Box.createHorizontalBox();
-        box.setBorder(new TitledBorder("Время отправления"));
+        box.setBorder(new TitledBorder("Дата и время прибытия"));
 
-        JLabel from = new JLabel("От");
-        JLabel till = new JLabel("До");
+        dateDeparting.setEditor(new JSpinner.DateEditor(dateDeparting, "dd MMMM HH:mm"));
 
-        box.add(from);
-        box.add(Box.createHorizontalStrut(3));
-        box.add(timeArriving);
-        box.add(Box.createHorizontalStrut(6));
-        box.add(till);
-        box.add(Box.createHorizontalStrut(3));
-        box.add(timeDeparting);
+        box.add(dateDeparting);
         return box;
     }
 
@@ -84,16 +84,24 @@ public class AddDialog extends JDialog {
         Box box = Box.createHorizontalBox();
         box.setBorder(new TitledBorder("Станция"));
 
-        JLabel from = new JLabel("Отправления");
-        JLabel till = new JLabel("Прибытия");
-
-        box.add(from);
+        box.add(new JLabel("Отправления"));
         box.add(Box.createHorizontalStrut(3));
         box.add(stationArriving);
         box.add(Box.createHorizontalStrut(6));
-        box.add(till);
+        box.add(new JLabel("Прибытия"));
         box.add(Box.createHorizontalStrut(3));
         box.add(stationDeparting);
+        return box;
+    }
+
+    private Box createTravelTime() {
+        Box box = Box.createHorizontalBox();
+        box.setBorder(new TitledBorder("Время в пути"));
+
+        travelTime.setEditor(new JSpinner.DateEditor(travelTime, "HH:mm"));
+
+        box.add(travelTime);
+
         return box;
     }
 

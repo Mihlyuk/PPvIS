@@ -9,3 +9,4 @@ import java.util.List;
 public class MainModel {
     public List<Train> trains = new ArrayList<>();
 }
+
