@@ -1,6 +1,7 @@
 package lab2.Model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,5 +9,8 @@ import java.util.List;
  */
 public class MainModel {
     public List<Train> trains = new ArrayList<>();
+
 }
+
+
 

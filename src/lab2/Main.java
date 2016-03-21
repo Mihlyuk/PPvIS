@@ -18,12 +18,12 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        MainView theView = new MainView("Window");
-
         MainModel theModel = new MainModel();
 
-        Controller theController = new Controller(theView, theModel);
+        Controller theController = new Controller(theModel);
 
-        theView.setVisible(true);
+        new MainView(theModel, theController, "Региональные поезда");
+
+
     }
 }

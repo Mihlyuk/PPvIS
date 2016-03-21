@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Константин on 12.03.2016.
  */
-public class SearchDialog {
+public class DeleteDialog {
     private JTextField trainNumber = new JTextField(20);
     private JSpinner dateArriving = new JSpinner(new SpinnerDateModel());
     private JSpinner timeArriving1 = new JSpinner();
@@ -31,6 +31,7 @@ public class SearchDialog {
 
         JButton closeButton = new JButton("Close");
         JButton findButton = new JButton("Find");
+        JButton removeButton = new JButton("Remove");
 
         Box mainBox = Box.createVerticalBox();
         mainBox.setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -94,6 +95,13 @@ public class SearchDialog {
 
         table = new TablePanel();
 
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.removeTrains(table.getTrains());
+                tablePanel.updateTable();
+            }
+        });
         findButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,6 +123,8 @@ public class SearchDialog {
 
         Box buttons = Box.createHorizontalBox();
         buttons.add(Box.createHorizontalGlue());
+        buttons.add(removeButton);
+        buttons.add(Box.createHorizontalStrut(6));
         buttons.add(findButton);
         buttons.add(Box.createHorizontalStrut(6));
         buttons.add(closeButton);

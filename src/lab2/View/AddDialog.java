@@ -1,26 +1,32 @@
 package lab2.View;
 
+import lab2.Controller.Controller;
+import lab2.Model.Train;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
-public class AddDialog extends JDialog {
-    public JTextField trainNumber = new JTextField(20);
+/**
+ * Created by Константин on 12.03.2016.
+ */
+public class AddDialog {
+    private JTextField trainNumber = new JTextField(20);
+    private JSpinner dateArriving = new JSpinner(new SpinnerDateModel());
+    private JSpinner dateDeparting = new JSpinner(new SpinnerDateModel());
+    private JTextField stationArriving = new JTextField(20);
+    private JTextField stationDeparting = new JTextField(20);
+    private JSpinner travelTime = new JSpinner(new SpinnerDateModel());
 
-    public JSpinner dateArriving = new JSpinner(new SpinnerDateModel());
-    public JSpinner dateDeparting = new JSpinner(new SpinnerDateModel());
+    Controller controller;
 
-    public JTextField stationArriving = new JTextField(20);
-    public JTextField stationDeparting = new JTextField(20);
-
-    public JSpinner travelTime = new JSpinner(new SpinnerDateModel());
-
-    public JButton addButton = new JButton("Add");
-
-    AddDialog(JFrame frame) {
-        super(frame,false);
+    public JDialog create(Controller controller, TablePanel tablePanel) {
+        this.controller = controller;
+        JDialog addDialog = new JDialog();
 
         Box mainBox = Box.createVerticalBox();
         mainBox.setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -34,7 +40,22 @@ public class AddDialog extends JDialog {
         box2.add(createDateDeparting());
 
         Box buttons = Box.createHorizontalBox();
+        JButton addButton = new JButton("Add");
         buttons.add(Box.createHorizontalGlue());
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+               if (checking(addDialog))
+                controller.addTrain(new Train(trainNumber.getText(),
+                                              stationArriving.getText(),
+                                              stationDeparting.getText(),
+                                              (Date) dateArriving.getValue(),
+                                              (Date) dateDeparting.getValue(),
+                                              (Date) travelTime.getValue()));
+                tablePanel.updateTable();
+            }
+        });
         buttons.add(addButton);
 
         mainBox.add(createTrainNumber());
@@ -47,9 +68,10 @@ public class AddDialog extends JDialog {
         mainBox.add(Box.createRigidArea(new Dimension(12, 12)));
         mainBox.add(buttons);
 
-        add(mainBox);
+        addDialog.add(mainBox);
 
-        pack();
+        addDialog.pack();
+        return addDialog;
     }
 
     private Box createTrainNumber() {
@@ -105,7 +127,22 @@ public class AddDialog extends JDialog {
         return box;
     }
 
-    public void addButtonListener(ActionListener listener) {
-        addButton.addActionListener(listener);
+    private boolean checking(JDialog addDialog) {
+        if ("".equals(trainNumber.getText())) {
+            JOptionPane.showMessageDialog(addDialog, "Enter the correct train number, please",
+                    "Information", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if ("".equals(stationArriving.getText())) {
+            JOptionPane.showMessageDialog(addDialog, "Enter the correct arrival station, please",
+                    "Information", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if ("".equals(stationDeparting.getText())) {
+            JOptionPane.showMessageDialog(addDialog, "Enter the correct departure station, please",
+                    "Information", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

@@ -1,24 +1,40 @@
 package lab2.View;
 
+import lab2.Controller.Controller;
+import lab2.Controller.Parser;
+import lab2.Model.MainModel;
+
 import javax.swing.*;
 
-public class MainView extends JFrame {
-    public AddDialog addDialog = new AddDialog(this);
-    public SearchDialog searchDialog = new SearchDialog(this);
-    public TablePanel tablePanel = new TablePanel();
-    public MenuBar menuBar = new MenuBar();
+/**
+ * Created by Константин on 12.03.2016.
+ */
+public class MainView {
+    public MainView (MainModel theModel, Controller controller, String name) {
+        JFrame theView = new JFrame();
+        theView.setName(name);
+        theView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        theView.setResizable(false);
 
-    public MainView(String name) {
-        setName(name);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
 
-        setJMenuBar(menuBar);
-        searchDialog.setVisible(false);
+        TablePanel tablePanel = new TablePanel(controller.getTrains());
+
+        Parser fileHandler = new Parser(theModel, tablePanel);
+
+        JDialog addDialog = new AddDialog().create(controller, tablePanel);
         addDialog.setVisible(false);
 
-        getContentPane().add(new JScrollPane(tablePanel));
+        JDialog searchDialog = new SearchDialog().create(controller, tablePanel);
+        searchDialog.setVisible(false);
 
-        setSize(1000, 500);
+        JDialog deleteDialog = new DeleteDialog().create(controller, tablePanel);
+        searchDialog.setVisible(false);
+
+        JMenuBar menuBar = new MenuBar().create(addDialog, searchDialog, deleteDialog, fileHandler);
+        theView.setJMenuBar(menuBar);
+
+        theView.setVisible(true);
+        theView.getContentPane().add(tablePanel);
+        theView.setSize(1000, 500);
     }
 }
