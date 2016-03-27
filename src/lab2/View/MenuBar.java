@@ -12,14 +12,14 @@ import java.awt.event.ActionListener;
  */
 public class MenuBar {
 
-    public JMenuBar create(JDialog addDialog, JDialog searchDialog, JDialog deleteDialog, Parser mainHandler) {
+    public JMenuBar create(TablePanel tablePanel, JDialog addDialog, JDialog searchDialog, JDialog deleteDialog, Parser mainHandler) {
         JMenuBar menuBar = new JMenuBar();
-        menuBar.add(createMenuFile(mainHandler));
+        menuBar.add(createMenuFile(tablePanel, mainHandler));
         menuBar.add(createMenuTools(addDialog, searchDialog, deleteDialog));
         return menuBar;
     }
 
-    private JMenu createMenuFile(Parser mainHandler) {
+    private JMenu createMenuFile(TablePanel tablePanel, Parser mainHandler) {
         Font font = new Font("Verdana", Font.PLAIN, 11);
 
         JMenu menu = new JMenu("File");
@@ -28,6 +28,13 @@ public class MenuBar {
         JMenuItem itemNewFile = new JMenuItem("New file");
         itemNewFile.setFont(font);
         menu.add(itemNewFile);
+        itemNewFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tablePanel.getTrains().clear();
+                tablePanel.updateTable();
+            }
+        });
 
         JMenuItem itemOpenFile = new JMenuItem("Open file");
         itemOpenFile.setFont(font);
@@ -35,7 +42,6 @@ public class MenuBar {
         itemOpenFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 mainHandler.openFile();
             }
         });
@@ -46,7 +52,6 @@ public class MenuBar {
         itemSaveFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 mainHandler.saveFile();
             }
         });
@@ -63,7 +68,6 @@ public class MenuBar {
                 }
             }
         });
-
         return menu;
     }
 

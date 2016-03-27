@@ -25,13 +25,6 @@ public class Parser {
         this.theModel = theModel;
     }
 
-/*   public void openFile() {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter(".xml", "xml"));
-        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            openXMLFile(fc.getSelectedFile().getPath());
-        }
-    }*/
     public void saveFile() {
         try {
             JFileChooser fc = new JFileChooser();
@@ -39,9 +32,9 @@ public class Parser {
                 XMLOutputFactory output = XMLOutputFactory.newInstance();
                 XMLStreamWriter writer = output.createXMLStreamWriter
                         (new FileWriter(fc.getSelectedFile() + "." + "xml"));
+
                 writer.writeStartDocument("UTF-8", "1.0");
                 writer.writeStartElement("trains");
-                writer.writeStartElement("numberExam");
                 for (Train train : table.getTrains()) {
                     writer.writeStartElement("train");
                     writer.writeAttribute("numberTrain", train.number);
@@ -53,13 +46,12 @@ public class Parser {
                     writer.writeEndElement();
                 }
                 writer.writeEndElement();
-                writer.writeEndElement();
                 writer.writeEndDocument();
                 writer.flush();
             }
         } catch (Exception eSave) {
             JOptionPane.showMessageDialog
-                    (null, "Can't save file", "ERROR", JOptionPane.ERROR_MESSAGE | JOptionPane.OK_OPTION);
+                    (null, "Can't save file", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -78,24 +70,24 @@ public class Parser {
               Date travelTime = new Date();
               table.getTrains().clear();
 
-              XMLStreamReader xmlr = XMLInputFactory.newInstance()
+              XMLStreamReader reader = XMLInputFactory.newInstance()
                       .createXMLStreamReader(fileName, new FileInputStream(fileName));
-              while (xmlr.hasNext()) {
-                  xmlr.next();
-                  if (xmlr.isStartElement()) {
-                      if (xmlr.getLocalName().equals("train")) {
-                          numberTrain = xmlr.getAttributeValue(null, "numberTrain");
-                          stationArriving = xmlr.getAttributeValue(null, "stationArriving");
-                          stationDeparting = xmlr.getAttributeValue(null, "stationDeparting");
+              while (reader.hasNext()) {
+                  reader.next();
+                  if (reader.isStartElement()) {
+                      if (reader.getLocalName().equals("train")) {
+                          numberTrain = reader.getAttributeValue(null, "numberTrain");
+                          stationArriving = reader.getAttributeValue(null, "stationArriving");
+                          stationDeparting = reader.getAttributeValue(null, "stationDeparting");
                           dateArriving = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                                  .parse(xmlr.getAttributeValue(null, "dateArriving"));
+                                  .parse(reader.getAttributeValue(null, "dateArriving"));
                           dateDeparting = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                                  .parse(xmlr.getAttributeValue(null, "dateDeparting"));
+                                  .parse(reader.getAttributeValue(null, "dateDeparting"));
                           travelTime = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-                                  .parse(xmlr.getAttributeValue(null, "travelTime"));
+                                  .parse(reader.getAttributeValue(null, "travelTime"));
                       }
-                  } else if (xmlr.isEndElement()) {
-                      if (xmlr.getLocalName().equals("train")) {
+                  } else if (reader.isEndElement()) {
+                      if (reader.getLocalName().equals("train")) {
                           table.getTrains().add(new Train(numberTrain, stationArriving, stationDeparting,
                                   dateArriving, dateDeparting, travelTime));
                       }

@@ -16,7 +16,6 @@ public class MainView {
         theView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         theView.setResizable(false);
 
-
         TablePanel tablePanel = new TablePanel(controller.getTrains());
 
         Parser fileHandler = new Parser(theModel, tablePanel);
@@ -24,13 +23,13 @@ public class MainView {
         JDialog addDialog = new AddDialog().create(controller, tablePanel);
         addDialog.setVisible(false);
 
-        JDialog searchDialog = new SearchDialog().create(controller, tablePanel);
+        JDialog searchDialog = new SearchDialog().create(controller.getTrains());
         searchDialog.setVisible(false);
 
-        JDialog deleteDialog = new DeleteDialog().create(controller, tablePanel);
+        JDialog deleteDialog = new DeleteDialog().create(controller.getTrains(), controller, tablePanel);
         searchDialog.setVisible(false);
 
-        JMenuBar menuBar = new MenuBar().create(addDialog, searchDialog, deleteDialog, fileHandler);
+        JMenuBar menuBar = new MenuBar().create(tablePanel, addDialog, searchDialog, deleteDialog, fileHandler);
         theView.setJMenuBar(menuBar);
 
         theView.setVisible(true);

@@ -71,7 +71,7 @@ public class TablePanel extends JPanel {
                 }
             }
         });
-        JButton prevButton = new JButton("Prev");
+    JButton prevButton = new JButton("Prev");
         panel.add(prevButton);
         prevButton.addActionListener(new ActionListener() {
             @Override
@@ -138,6 +138,12 @@ public class TablePanel extends JPanel {
 
     public void setTrains(List<Train> trains) {
         this.trains = trains;
+    }
+
+    public void addTrains(List<Train> trains) {
+        for (Train train: trains) {
+            this.trains.add(train);
+        }
     }
 
     public List<Train> getTrains() {
