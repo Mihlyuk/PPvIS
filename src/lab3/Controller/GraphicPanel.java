@@ -44,12 +44,7 @@ public class GraphicPanel {
         return panel;
     }
 
-    public void calculate(int countMas) {
-        graphic.print(countMas);
-    }
-
     public void clearGraph() {
-        graphic.repaint();
         graphic.clearGraph();
     }
 
@@ -67,6 +62,10 @@ public class GraphicPanel {
 
     public void scaleYPlus() {
         graphic.scaleYPlus();
+    }
+
+    public void addValue(Value value) {
+        graphic.addValue(value);
     }
 
     public ArrayList<Value> getValues() {

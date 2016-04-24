@@ -12,19 +12,16 @@ import java.util.List;
  */
 public class TablePanel extends JPanel {
     private List<Value> values;
-
-    public TablePanel(List<Value> values) {
-        this.values = values;
-        add(new JScrollPane(makeTable(values)));
-    }
-
+    private JTable table;
     public TablePanel() {
         this.values = new ArrayList<>();
         add(new JScrollPane(makeTable(values)));
+
     }
-    //asdasdads
+
     private JTable makeTable(List<Value> values) {
-        JTable table = new JTable(new Object[values.size()][2], new Object[]{"The number of elements", "sorting"});
+        JTable table = new JTable(new Object[values.size()][2],
+                new Object[]{"Number of arrays", "Sorting time(mS)"});
         for (int i = 0; i < values.size(); i++) {
             table.setValueAt(values.get(i).time, i, 0);
             table.setValueAt(values.get(i).countSort, i, 1);
@@ -38,14 +35,12 @@ public class TablePanel extends JPanel {
 
     public void updateTable() {
         removeAll();
-        updateUI();
         add(new JScrollPane(makeTable(values)));
-        revalidate();
-        repaint();
+        updateUI();
     }
 
-    public void setValues(List<Value> values) {
-        this.values = values;
+    public void addValue(Value value) {
+        this.values.add(value);
         updateTable();
     }
 }

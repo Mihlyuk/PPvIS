@@ -134,28 +134,12 @@ public class Graphic extends JPanel {
     public ArrayList<Value> getValues() {
         return valueList;
     }
-    public void print(int countMas) {
-        Graphics g = getGraphics();
-        clearGraph();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 2; i < countMas; i++) {
-                    Sort quickSort = new Sort();
-                    ArrayList<Integer> array = quickSort.generateArray(i);
-                    long start = System.nanoTime();
-                    quickSort.bubbleSort(array);
-                    long end = System.nanoTime();
-                    long traceTime = (end - start);
-                    addAndDraw(i, (int) traceTime / 700, g);
-                    valueList.add(new Value(i, (int) traceTime / 700));
-                }
-            }
-        });
-        thread.run();
-    }
 
-    public synchronized void addAndDraw(int cordX, int cordY, Graphics g) {
+    public void addValue(Value value) {
+        valueList.add(value);
+        repaint();
+    }
+    public void addAndDraw(int cordX, int cordY, Graphics g) {
         coeffX = getWidth() / longestVectorX / 2;
         coeffY = getHeight() / longestVectorY / 2;
         int centerX = getWidth() / 2;
